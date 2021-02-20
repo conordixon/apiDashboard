@@ -13,7 +13,6 @@ public class TestAPICall {
 
     @Test
     public void TestAPICall(){
-        given().
                 given().
                 contentType("text/json").
                 when().
