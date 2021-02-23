@@ -69,5 +69,20 @@
             <artifactId>testng</artifactId>
             <version>6.9.10</version>
         </dependency>
+        <dependency>
+            <groupId>org.apache.httpcomponents</groupId>
+            <artifactId>httpclient</artifactId>
+            <version>4.5.2</version>
+        </dependency>
+        <dependency>
+            <groupId>com.mastercard.developer</groupId>
+            <artifactId>oauth1-signer</artifactId>
+            <version>1.5.2-SNAPSHOT</version>
+        </dependency>
+        <dependency>
+            <groupId>com.mastercard.api</groupId>
+            <artifactId>locations</artifactId>
+            <version>1.0.4</version>
+        </dependency>
     </dependencies>
 </project>
