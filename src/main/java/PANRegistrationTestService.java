@@ -32,13 +32,13 @@ import java.security.cert.X509Certificate;
 public class PANRegistrationTestService {
     private static String[] SUPPORTED_TLS = new String[] { "TLSv1.1", "TLSv1.2" };
 
-    private static final String STAGE_SANDBOX_CONSUMERR_KEY = "nhuDyZeFyJDwGYBe71E9qy6nJ-v0x9W_bZqsy9kq91f33083!ddc6accfb9c24a078e8e742a0f1bdf7e0000000000000000";
+    private static final String STAGE_SANDBOX_CONSUMER_KEY = "nhuDyZeFyJDwGYBe71E9qy6nJ-v0x9W_bZqsy9kq91f33083!ddc6accfb9c24a078e8e742a0f1bdf7e0000000000000000";
     private static final String STAGE_SANDBOX_KEY_ALIAS = "keyalias";
     private static final String STAGE_SANDBOX_PASSWORD = "keystorepassword";
     private static final String STAGE_SANDBOX_URL = "https://sbx.stage.api.mastercard.com/alm/panregistration/accounts";
     private static final String STAGE_SANDBOX_P12_STRING = "";
 
-    private static final String STAGE_PROD_CONSUMERR_KEY = "quxSP1UwsBykH1hemN3S4v7FXIjrSij21DDQCr7t2938077b!0dd7e3863ee94034bb92cd1e97b981ea0000000000000000";
+    private static final String STAGE_PROD_CONSUMER_KEY = "quxSP1UwsBykH1hemN3S4v7FXIjrSij21DDQCr7t2938077b!0dd7e3863ee94034bb92cd1e97b981ea0000000000000000";
     private static final String STAGE_PROD_KEY_ALIAS = "prodAlias";
     private static final String STAGE_PROD_PASSWORD = "keystore1234";
     private static final String STAGE_PROD_URL = "https://stage.api.mastercard.com/alm/panregistration/accounts";
@@ -49,7 +49,7 @@ public class PANRegistrationTestService {
 
     public static void main(String[] args) throws Exception {
 
-        String consumerKey =  STAGE_PROD_CONSUMERR_KEY;
+        String consumerKey =  STAGE_PROD_CONSUMER_KEY;
         String keyAlias = STAGE_PROD_KEY_ALIAS;
         String keyPassword = STAGE_PROD_PASSWORD;
         String thisUrl = STAGE_PROD_URL;
