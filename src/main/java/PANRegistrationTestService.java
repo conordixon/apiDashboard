@@ -4,6 +4,7 @@ import org.apache.http.Header;
 import org.apache.http.HttpResponse;
 import org.apache.http.client.HttpClient;
 import org.apache.http.client.methods.HttpPost;
+import org.apache.http.client.methods.HttpGet;
 import org.apache.http.conn.ssl.SSLConnectionSocketFactory;
 import org.apache.http.entity.ContentType;
 import org.apache.http.entity.StringEntity;
@@ -32,28 +33,28 @@ import java.security.cert.X509Certificate;
 public class PANRegistrationTestService {
     private static String[] SUPPORTED_TLS = new String[] { "TLSv1.1", "TLSv1.2" };
 
-    private static final String STAGE_SANDBOX_CONSUMER_KEY = "nhuDyZeFyJDwGYBe71E9qy6nJ-v0x9W_bZqsy9kq91f33083!ddc6accfb9c24a078e8e742a0f1bdf7e0000000000000000";
-    private static final String STAGE_SANDBOX_KEY_ALIAS = "keyalias";
-    private static final String STAGE_SANDBOX_PASSWORD = "keystorepassword";
-    private static final String STAGE_SANDBOX_URL = "https://sbx.stage.api.mastercard.com/alm/panregistration/accounts";
-    private static final String STAGE_SANDBOX_P12_STRING = "";
+    private static final String SANDBOX_CONSUMER_KEY = "CAvRNGVDOZ9vRJ0Nis5qd290D2WE8M12BodRyL-Z32dad64e!6103a5ca3aef458a9ac0f8ab6b79a4480000000000000000";
+    private static final String SANDBOX_KEY_ALIAS = "keyalias";
+    private static final String SANDBOX_PASSWORD = "keystorepassword";
+    private static final String SANDBOX_URL = "https://sandbox.api.mastercard.com/atms/v1/atm?PageOffset=0&PageLength=5&AddressLine1=114%20Fifth%20Avenue&AddressLine2=Apartment%201&City=New%20York%20City&CountrySubdivision=NY&PostalCode=11101&Country=USA&Latitude=38.76006576913497&Longitude=-90.74615107952418&DistanceUnit=MILE&Radius=25&SupportEMV=1&InternationalMaestroAccepted=1";
+    private static final String SANDBOX_P12_STRING = "";
 
-    private static final String STAGE_PROD_CONSUMER_KEY = "quxSP1UwsBykH1hemN3S4v7FXIjrSij21DDQCr7t2938077b!0dd7e3863ee94034bb92cd1e97b981ea0000000000000000";
-    private static final String STAGE_PROD_KEY_ALIAS = "prodAlias";
-    private static final String STAGE_PROD_PASSWORD = "keystore1234";
-    private static final String STAGE_PROD_URL = "https://stage.api.mastercard.com/alm/panregistration/accounts";
-    private static final String STAGE_PROD_P12_STRING = "";
+    private static final String PROD_CONSUMER_KEY = "quxSP1UwsBykH1hemN3S4v7FXIjrSij21DDQCr7t2938077b!0dd7e3863ee94034bb92cd1e97b981ea0000000000000000";
+    private static final String PROD_KEY_ALIAS = "prodAlias";
+    private static final String PROD_PASSWORD = "keystore1234";
+    private static final String PROD_URL = "https://api.mastercard.com/atms/v1/atm";
+    private static final String PROD_P12_STRING = "";
 
 
     private static PrivateKey signingKey;
 
     public static void main(String[] args) throws Exception {
 
-        String consumerKey =  STAGE_PROD_CONSUMER_KEY;
-        String keyAlias = STAGE_PROD_KEY_ALIAS;
-        String keyPassword = STAGE_PROD_PASSWORD;
-        String thisUrl = STAGE_PROD_URL;
-        String p12String = STAGE_PROD_P12_STRING;
+        String consumerKey =  SANDBOX_CONSUMER_KEY;
+        String keyAlias = SANDBOX_KEY_ALIAS;
+        String keyPassword = SANDBOX_PASSWORD;
+        String thisUrl = SANDBOX_URL;
+        String p12String = SANDBOX_P12_STRING;
 
         try {
             HttpResponse response = getResponse(thisUrl, p12String, keyPassword, keyAlias, consumerKey);
@@ -75,17 +76,17 @@ public class PANRegistrationTestService {
         HttpClient client = builder.build();
         //For POST
         String json = "{\"requestId\":\"hSJA-12197987-shfksdjhks-15289\",\"totalRecords\":\"1\",\"records\": [{\"pan\":\"8787628778867856\"},{\"pan\":\"22787628778867856\"}]}";
-        HttpPost postRequest = new HttpPost(url);
-        postRequest.addHeader("Authorization", genAuthorizationHeader(url, json, null, HttpPost.METHOD_NAME, p12Content, p12Password, keyAlias, consumerKey));
-        postRequest.setEntity(new StringEntity(json, ContentType.APPLICATION_JSON));
-        HttpResponse response = client.execute(postRequest);
+//        HttpPost postRequest = new HttpPost(url);
+//        postRequest.addHeader("Authorization", genAuthorizationHeader(url, json, null, HttpPost.METHOD_NAME, p12Content, p12Password, keyAlias, consumerKey));
+//        postRequest.setEntity(new StringEntity(json, ContentType.APPLICATION_JSON));
+//        HttpResponse response = client.execute(postRequest);
 
         //For GET
-        /*HttpGet getRequest = new HttpGet(url);
+        HttpGet getRequest = new HttpGet(url);
         getRequest.addHeader("User-Agent", "Mozilla/5.0 (Windows NT 6.1; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/55.0.2883.87 Safari/537.36");
-        //LOG.info("Authorization header = " + LocationsTestService.genAuthorizationHeader());
+//        LOG.info("Authorization header = " + LocationsTestService.genAuthorizationHeader());
         getRequest.addHeader("Authorization", genAuthorizationHeader(url, "", null, HttpGet.METHOD_NAME, p12Content, p12Password, keyAlias, consumerKey));
-        HttpResponse response = client.execute(getRequest);*/
+        HttpResponse response = client.execute(getRequest);
         //LOG.info(response.toString());
         return response;
     }
@@ -135,7 +136,7 @@ public class PANRegistrationTestService {
         //Authorization header string.
         Charset charset = StandardCharsets.UTF_8;
         // Get Private Key Via P12
-        InputStream is = new FileInputStream("/Users/conordixon/p12");
+        InputStream is = new FileInputStream("/Users/conordixon/Desktop/Project/p12keys/apiDashboardGatewayCalls-sandbox.p12");
         setP12(is, keyAlias, p12Password);
         URI uri = URI.create(requestUrl);
         OAuth.getAuthorizationHeader(uri, httpMethod, requestContent, charset, consumerKey, signingKey);
