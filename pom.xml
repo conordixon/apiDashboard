@@ -82,19 +82,24 @@
             <version>6.9.10</version>
         </dependency>
         <dependency>
-            <groupId>org.apache.httpcomponents</groupId>
-            <artifactId>httpclient</artifactId>
-            <version>4.5.2</version>
-        </dependency>
-        <dependency>
             <groupId>com.mastercard.developer</groupId>
             <artifactId>oauth1-signer</artifactId>
-            <version>1.5.2-SNAPSHOT</version>
+            <version>1.5.1</version>
         </dependency>
         <dependency>
             <groupId>com.mastercard.api</groupId>
             <artifactId>locations</artifactId>
             <version>1.0.4</version>
+        </dependency>
+        <dependency>
+            <groupId>org.slf4j</groupId>
+            <artifactId>slf4j-jdk14</artifactId>
+            <version>1.7.30</version>
+        </dependency>
+        <dependency>
+            <groupId>org.postgresql</groupId>
+            <artifactId>postgresql</artifactId>
+            <version>42.2.14</version>
         </dependency>
     </dependencies>
 </project>
