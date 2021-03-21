@@ -195,7 +195,7 @@ public class ApiServiceCall {
         Charset charset = StandardCharsets.UTF_8;
 
         InputStream is = new FileInputStream(ApiServiceConfiguration.P12);
-        setP12(is, keyAlias, p12Password);
+        SetP12(is, keyAlias, p12Password);
         URI uri = URI.create(requestUrl);
         OAuth.getAuthorizationHeader(uri, httpMethod, requestContent, charset, consumerKey, signingKey);
 
@@ -204,7 +204,7 @@ public class ApiServiceCall {
         return authHeader;
     }
 
-    private static void setP12(InputStream is, String alias, String password) throws SdkException {
+    private static void SetP12(InputStream is, String alias, String password) throws SdkException {
         try {
             KeyStore ks = KeyStore.getInstance("PKCS12");
             ks.load(is, password.toCharArray());
