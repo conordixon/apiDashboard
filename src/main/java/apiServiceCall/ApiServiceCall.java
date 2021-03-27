@@ -29,6 +29,11 @@ import java.nio.charset.Charset;
 import java.nio.charset.StandardCharsets;
 import java.security.*;
 import java.security.cert.X509Certificate;
+import java.sql.PreparedStatement;
+import java.sql.Timestamp;
+import java.util.*;
+import java.util.Date;
+
 import static org.slf4j.LoggerFactory.getLogger;
 
 
@@ -66,14 +71,22 @@ import static org.slf4j.LoggerFactory.getLogger;
 //Match or some other API - whatever suits.
 //Fill this with all the other APIs and have GET calls sorted.
 //Once the calls are working, think about adding results to DB.
-//How many APIs do want to incorporate?
-//Setup your local instance of PostgreSql
-//Prepare login data for DB url/user/pass
-//Copy over the PostgreSqlConnector class into your project.
-//Look at DevPortalCrawler class how connections are done -> then we will have another meeting.
+//How many APIs do want to incorporate?. Done.
+//Setup your local instance of PostgreSql. Done.
+//Prepare login data for DB url/user/pass. Done.
+//Copy over the PostgreSqlConnector class into your project. Done.
+//Look at DevPortalCrawler class how connections are done -> then we will have another meeting. Done.
+//Write DB statements for API endpoints and responses. Done.
 
-//Low priority for now:
-//POST calls, how important.
+/** Create proper table with proper types (not sure if varchar or something else)
+ * Add timestamp column so you can track when it was added into DB (low priority)
+ * When you will have more columns just add more (?,?) parameters to template
+ * And simply fill them in below by using preparedStatement.setString or instead of setString, you can
+ * use setBoolean setInt and so on.
+ *
+ * so for two columns in db this would look like:
+ * "INSERT into public.table_name_3 (columnname_1, columnname_2) VALUES (?,?);");
+ */
 
 import static org.slf4j.LoggerFactory.getLogger;
 
@@ -107,7 +120,33 @@ public class ApiServiceCall {
         try {
             HttpResponse response = getResponse(thisUrl, p12String, keyPassword, keyAlias, consumerKey, json, method);
             Header[] thisResponseHeaderArray = response.getAllHeaders();
-            System.out.println("API Response Code: " +response.getStatusLine().getStatusCode());
+            System.out.println("API Server Response Status Code: " +response.getStatusLine().getStatusCode());
+
+
+            //INSERT into public.table_name_3 (column_1) VALUES ('a');
+            //This is the place where you can assign all the variable that will go into DB
+            //This can be simple string (just bear in my this test DB column if of "char" size so it will only take 1 char.
+//            https://docs.oracle.com/javase/tutorial/jdbc/basics/prepared.html
+
+            String responseCode = String.valueOf(String.valueOf(response.getStatusLine().getStatusCode()));
+
+            //Here you will assign all the values like
+            //String responseCode = response... and so on.
+
+            PreparedStatement preparedStatement = null;
+            //This is where you create a statement TEMPLATE
+            preparedStatement = conn.prepareStatement("INSERT into public.api_dashboard (http_header, api_uri, status_code_response, timestamp) VALUES (?,?,?,?);");
+            //I replaced with ? mark, this means that this  is parameter to be filled in.
+            //Here is the place where you will FILL this template with data:
+            preparedStatement.setString(1, method);
+            preparedStatement.setString(2, thisUrl);
+            preparedStatement.setString(3, responseCode);
+            preparedStatement.setTimestamp(4, new Timestamp(new Date().getTime()));
+
+            //Remember to execute and close statement.
+            preparedStatement.execute();
+            preparedStatement.close();
+
             System.out.println("API Protocol Version: " +response.getStatusLine().getProtocolVersion());
             System.out.println("API Response Headers: ");
             for (int i=0; i<thisResponseHeaderArray.length; i++) {
@@ -128,7 +167,7 @@ public class ApiServiceCall {
         switch(method) {
             case  "GET":
 
-                getRequest.addHeader("Authorization", GenAuthorizationHeader(url,"", null, HttpGet.METHOD_NAME, p12Content, p12Password, keyAlias, consumerKey, json));
+                getRequest.addHeader("Authorization", GenAuthorizationHeader(url,"", null, HttpGet.METHOD_NAME, p12Content, p12Password, keyAlias, consumerKey));
                 response = client.execute(getRequest);
 
                 break;
@@ -136,7 +175,7 @@ public class ApiServiceCall {
 
                 json = ApiServiceConfiguration.JSON;
                 HttpPost postRequest = new HttpPost(url);
-                postRequest.addHeader("Authorization", GenAuthorizationHeader(url, json, null, HttpPost.METHOD_NAME, p12Content, p12Password, keyAlias, consumerKey, json));
+                postRequest.addHeader("Authorization", GenAuthorizationHeader(url, json,null, HttpPost.METHOD_NAME, p12Content, p12Password, keyAlias, consumerKey));
                 postRequest.setEntity(new StringEntity(json, ContentType.APPLICATION_JSON));
                 response = client.execute(postRequest);
 
@@ -189,7 +228,7 @@ public class ApiServiceCall {
     }
 
     public static String GenAuthorizationHeader(String requestUrl, String requestContent, String requestParams,
-                                                String httpMethod, String p12Content, String p12Password, String keyAlias, String consumerKey, String responses) throws Exception {
+                                                String httpMethod, String p12Content, String p12Password, String keyAlias, String consumerKey) throws Exception {
 
         //Authorization header string.
         Charset charset = StandardCharsets.UTF_8;
@@ -200,6 +239,8 @@ public class ApiServiceCall {
         OAuth.getAuthorizationHeader(uri, httpMethod, requestContent, charset, consumerKey, signingKey);
 
         String authHeader = OAuth.getAuthorizationHeader(uri, httpMethod, requestContent, charset, consumerKey, signingKey);
+        System.out.println("HTTP Method: " + httpMethod);
+        System.out.println("API Request URI: " + uri);
         System.out.println("Request Authorization Header: " + authHeader);
         return authHeader;
     }
