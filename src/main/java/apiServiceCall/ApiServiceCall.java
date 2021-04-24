@@ -16,7 +16,6 @@ import org.apache.http.entity.ContentType;
 import org.apache.http.entity.StringEntity;
 import org.apache.http.impl.client.HttpClientBuilder;
 import org.apache.http.util.EntityUtils;
-import org.slf4j.Logger;
 
 
 import javax.net.ssl.SSLContext;
@@ -34,67 +33,11 @@ import java.sql.Timestamp;
 import java.util.*;
 import java.util.Date;
 
-import static org.slf4j.LoggerFactory.getLogger;
-
-
-//Next steps:
-//- Resolve dependencies to get this file compiled
-//- Add p12 files and make authenticated API calls
-//- Change structure to make dynamic, separate config, separate functions to call APIs
-//- Add Postgres database support
-
-/**
- * Next steps 2-Mar-2021
- *
- * 1) Lines 43-53 we need to move them to external file (for now Java). "ApiServiceConfiguration or API config or something"
- * This should go to separate class. And then you just instantiate this class here.
- * Configurations.class.
- * In this file here, you have to do something like: Configurations configuration = new ApiServiceConfiguration();
- * For now - just for Locations. Next meeting - we will parameterize for different APIs.
- *
- * Move these strings as well:
- *  String json = "{\"requestId\":\"hSJA-12197987-shfksdjhks-15289\",\"totalRecords\":\"1\",\"records\": [{\"pan\":\"8787628778867856\"},{\"pan\":\"22787628778867856\"}]}";
- *
- * configuration.SANDBOX_CONSUMER_KEY
- *
- * 2) Add package (to each and every class you create)
- *
- * 3) Change the name of the class  ApiServiceCall.ApiServiceCall > change to generic - APICallClass.
- *
- * FOR LATER
- * 1) Create switch statement for POST/GET
- * 2) Deprecation fixing
- * 3) Saving response in DB - (check Crawler class from QA framework).
- * 4) Some sort of OK response from the GW.
- *
- * */
-//Match or some other API - whatever suits.
-//Fill this with all the other APIs and have GET calls sorted.
-//Once the calls are working, think about adding results to DB.
-//How many APIs do want to incorporate?. Done.
-//Setup your local instance of PostgreSql. Done.
-//Prepare login data for DB url/user/pass. Done.
-//Copy over the PostgreSqlConnector class into your project. Done.
-//Look at DevPortalCrawler class how connections are done -> then we will have another meeting. Done.
-//Write DB statements for API endpoints and responses. Done.
-
-/** Create proper table with proper types (not sure if varchar or something else)
- * Add timestamp column so you can track when it was added into DB (low priority)
- * When you will have more columns just add more (?,?) parameters to template
- * And simply fill them in below by using preparedStatement.setString or instead of setString, you can
- * use setBoolean setInt and so on.
- *
- * so for two columns in db this would look like:
- * "INSERT into public.table_name_3 (columnname_1, columnname_2) VALUES (?,?);");
- */
-
-import static org.slf4j.LoggerFactory.getLogger;
 
 public class ApiServiceCall {
 
     public static ApiServiceConfiguration configuration = new ApiServiceConfiguration();
     private static Connection conn = PostgresSQLConnector.getConnection();
-    private static final Logger LOGGER = getLogger(ApiServiceCall.class);
 
     private static String[] SUPPORTED_TLS = new String[] { "TLSv1.1", "TLSv1.2" };
 
@@ -185,8 +128,6 @@ public class ApiServiceCall {
                 method = "GET";
         }
         return response;
-//    } catch (Exception e) {
-//        throw Exception(LOGGER.info(logPrefix + "API call was not successful"));
     }
 
     @SuppressWarnings("deprecation")

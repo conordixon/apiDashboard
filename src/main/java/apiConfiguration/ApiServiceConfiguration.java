@@ -17,7 +17,6 @@ public class ApiServiceConfiguration {
      * Common elements for accessing APIs like key and password
      * */
 
-    //Low priority, but think about key being a common element.
     public static final String SANDBOX_OAUTH_KEY_ALIAS = "keyalias";
     public static final String SANDBOX_OAUTH_KEY_PASSWORD = "keystorepassword";
     public static final String SANDBOX_P12_STRING = "";
