@@ -123,27 +123,28 @@ public class ApiServiceCall {
             System.out.println("API Server Response Status Code: " +response.getStatusLine().getStatusCode());
 
 
-            //INSERT into public.table_name_3 (column_1) VALUES ('a');
-            //This is the place where you can assign all the variable that will go into DB
-            //This can be simple string (just bear in my this test DB column if of "char" size so it will only take 1 char.
-//            https://docs.oracle.com/javase/tutorial/jdbc/basics/prepared.html
-
+            /*
+            Implementation of JDBC PostgreSQL prepared statements
+            https://docs.oracle.com/javase/tutorial/jdbc/basics/prepared.html
+            */
             String responseCode = String.valueOf(String.valueOf(response.getStatusLine().getStatusCode()));
 
-            //Here you will assign all the values like
-            //String responseCode = response... and so on.
+            /*
+            Prepared statement template is implemented with the API configuration values and corresponding database table columns
+            */
 
             PreparedStatement preparedStatement = null;
-            //This is where you create a statement TEMPLATE
+            //Prepared statement query
             preparedStatement = conn.prepareStatement("INSERT into public.api_dashboard (http_header, api_uri, status_code_response, timestamp) VALUES (?,?,?,?);");
-            //I replaced with ? mark, this means that this  is parameter to be filled in.
-            //Here is the place where you will FILL this template with data:
+            /*
+            Prepared statement API request variables are set below.
+            */
             preparedStatement.setString(1, method);
             preparedStatement.setString(2, thisUrl);
             preparedStatement.setString(3, responseCode);
             preparedStatement.setTimestamp(4, new Timestamp(new Date().getTime()));
 
-            //Remember to execute and close statement.
+            //Executing and subsequently closing the statement after execution
             preparedStatement.execute();
             preparedStatement.close();
 
