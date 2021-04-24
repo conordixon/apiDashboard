@@ -5,7 +5,8 @@ import java.sql.DriverManager;
 
 /*
 https://jdbc.postgresql.org/documentation/head/connect.html
-PostgreSQL JDBC driver integation for PostgreSQL local database connection. 
+https://docs.oracle.com/javase/7/docs/api/java/sql/Connection.html
+PostgreSQL JDBC driver integation for PostgreSQL local database connection.
 */
 
 public class PostgresSQLConnector {
