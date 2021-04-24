@@ -69,6 +69,7 @@ public class ApiServiceCall {
             /*
             Implementation of JDBC PostgreSQL prepared statements
             https://docs.oracle.com/javase/tutorial/jdbc/basics/prepared.html
+            https://jdbc.postgresql.org/documentation/head/server-prepare.html
             */
             String responseCode = String.valueOf(String.valueOf(response.getStatusLine().getStatusCode()));
 

@@ -3,6 +3,10 @@ package PostgresSQLConnector;
 import java.sql.Connection;
 import java.sql.DriverManager;
 
+/*
+https://jdbc.postgresql.org/documentation/head/connect.html
+PostgreSQL JDBC driver integation for PostgreSQL local database connection. 
+*/
 
 public class PostgresSQLConnector {
 
@@ -10,7 +14,6 @@ public class PostgresSQLConnector {
 
     static {
         String url = ("jdbc:postgresql://localhost:5432/postgres");
-//        String user = ("conordixon");
         String database = ("postgres");
         String password = ("password");
         try{
